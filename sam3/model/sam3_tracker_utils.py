@@ -6,7 +6,12 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from numpy.typing import NDArray
-from sam3.model.edt import edt_triton
+def edt_triton(x):
+    try:
+        from sam3.model.edt import edt_triton as _edt_triton
+        return _edt_triton(x)
+    except ImportError:
+        raise RuntimeError("triton is not available on this platform (Windows). EDT-based operations require Linux.")
 
 
 def sample_box_points(
